@@ -14,6 +14,8 @@ __plugin_meta__ = PluginMetadata(
     usage="无",
     type="application",
     config=PluginConfig,
+    homepage="https://github.com/iyume/nonebot-plugin-nsfw",
+    supported_adapters={"~:OneBot V11"},
     extra={},
 )
 
