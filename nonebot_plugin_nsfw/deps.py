@@ -67,10 +67,6 @@ class User:
         self.date_ = today
         self.warning_count = 0
 
-    @property
-    def should_ban(self) -> bool:
-        return self.warning_count > config.warning_capacity
-
 
 # simple database
 users: Dict[str, User] = {}

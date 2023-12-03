@@ -32,4 +32,9 @@ async def _(
         await bot.delete_msg(message_id=event.message_id)
     if config.warning_capacity != 0:
         user.warning_count += 1
-        await bot.send(event, f"不许色色，警告 {user.warning_count} 次！", at_sender=True)
+    if config.ban == True and user.warning_count > config.warning_capacity:
+        await bot.set_group_ban(
+            group_id=event.group_id, user_id=event.user_id, duration=config.ban_time
+        )
+    else:
+        await bot.send(event, f"涩涩哒咩，警告 {user.warning_count} 次！", at_sender=True)

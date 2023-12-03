@@ -71,12 +71,15 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 
 ## 插件配置项
 
-|                 | 默认值                            | 可选值                         | 说明                                  |
-| --------------- | --------------------------------- | ------------------------------ | ------------------------------------- |
-| model           | "safety_checker"                  | "safety_checker", "nsfw_model" |                                       |
-| device          | "cpu"                             | "cpu", "cuda", etc.            |                                       |
-| withdraw        | True                              | True, False                    | 撤回检测到 NSFW 图片的消息            |
-| nsfw_model_path | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载 |
+|                          | 默认值                            | 可选值                         | 说明                                               |
+| ------------------------ | --------------------------------- | ------------------------------ | -------------------------------------------------- |
+| nsfw\_\_model            | "safety_checker"                  | "safety_checker", "nsfw_model" |                                                    |
+| nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.            |                                                    |
+| nsfw\_\_withdraw         | True                              | True, False                    | 撤回检测到 NSFW 图片的消息                         |
+| nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载              |
+| nsfw\_\_warning_capacity | 3                                 | 正整数                         | 一天内警告 N 次后禁言，0 不警告，ban=True 直接禁言 |
+| nsfw\_\_ban              | True                              | True, False                    | 是否启用禁言                                       |
+| nsfw\_\_ban_time         | 1800                              | 正整数                         | 禁言时长，单位为秒数                               |
 
 更多配置正在开发中...
 
