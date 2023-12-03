@@ -94,8 +94,8 @@ def load_nsfw_model() -> None:
 
 
 _loaders: dict[T_AVAILABLE_MODEL, Callable[[], None]] = {
-    "safety_checker": load_safety_checker,
-    "nsfw_model": load_nsfw_model,
+    "safety-checker": load_safety_checker,
+    "nsfw-model": load_nsfw_model,
 }
 _loader = _loaders.get(config.model)
 if _loader is None:

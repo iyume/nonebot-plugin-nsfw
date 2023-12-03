@@ -2,6 +2,8 @@
 
 此插件是一个集成于 NoneBot 的、基于深度神经网络的 **群聊 NSFW 图片检测插件**，带有 **撤回、警告、禁言** 等功能。可选择使用 [Safety Checker](https://github.com/iyume/safety-checker)、[NSFW Model](https://github.com/GantMan/nsfw_model) 模型。
 
+**注意：** 目前插件仅在 matcha 完成测试，只能保证 OneBot V11 兼容。
+
 ## Safety Checker 对比 NSFW Model
 
 |                              | Safety Checker      | NSFW Model（默认） |
@@ -18,7 +20,13 @@
 
 插件默认使用 NSFW Model 轻量模型，默认设备为 CPU。
 
-安装：
+安装 NoneBot：
+
+```txt
+pip install nonebot2[fastapi]
+```
+
+安装插件：
 
 ```txt
 pip install nonebot-plugin-nsfw[nsfw-model]
@@ -73,7 +81,7 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 
 |                          | 默认值                            | 可选值                         | 说明                                               |
 | ------------------------ | --------------------------------- | ------------------------------ | -------------------------------------------------- |
-| nsfw\_\_model            | "safety_checker"                  | "safety_checker", "nsfw_model" |                                                    |
+| nsfw\_\_model            | "safety-checker"                  | "safety-checker", "nsfw-model" |                                                    |
 | nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.            |                                                    |
 | nsfw\_\_withdraw         | True                              | True, False                    | 撤回检测到 NSFW 图片的消息                         |
 | nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载              |
