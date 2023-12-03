@@ -36,7 +36,7 @@ class PluginScopedConfig(BaseModel):
 
 
 class PluginConfig(BaseModel):
-    nsfw: PluginScopedConfig
+    nsfw: PluginScopedConfig = PluginScopedConfig()
 
 
 config = PluginConfig.parse_obj(nonebot.get_driver().config).nsfw

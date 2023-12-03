@@ -34,7 +34,7 @@ def _dummy(*args, **kwargs):  # type: ignore
 
 def get_run_model() -> run_model_intf:
     if _run_model == _dummy:
-        raise RuntimeError("no model available")
+        raise ValueError("no model available")
     return _run_model
 
 
@@ -104,7 +104,14 @@ if _loader is None:
 
 def _ctx_loader():
     logger.info("Start loading model...")
-    _loader()
+    try:
+        _loader()
+    except Exception as e:
+        logger.exception(e)
+        logger.error(
+            "Cannot load model, try to install using "
+            + repr("pip install nonebot-plugin-nsfw[nsfw-model]"),
+        )
     logger.success("Successfully load model")
 
 

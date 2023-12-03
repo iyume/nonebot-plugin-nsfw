@@ -2,10 +2,20 @@ import nonebot
 from nonebot import on_message
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
 from nonebot.params import Depends
+from nonebot.plugin import PluginMetadata
 
-from nonebot_plugin_nsfw.config import config
-from nonebot_plugin_nsfw.deps import User, detect_nsfw, get_current_user
+from nonebot_plugin_nsfw.config import PluginConfig, config
+from nonebot_plugin_nsfw.deps import User, detect_nsfw, get_current_user, get_run_model
 from nonebot_plugin_nsfw.loader import run_loader_thread
+
+__plugin_meta__ = PluginMetadata(
+    name="群聊 NSFW 图片检测",
+    description="群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。使用 Safety Checker / NSFW Model",
+    usage="无",
+    type="application",
+    config=PluginConfig,
+    extra={},
+)
 
 driver = nonebot.get_driver()
 _loader_thread = run_loader_thread()
@@ -16,7 +26,15 @@ async def _():
     _loader_thread.join()
 
 
-nsfw_matcher = on_message()
+def check_model_available() -> bool:
+    try:
+        get_run_model()
+    except ValueError:
+        return False
+    return True
+
+
+nsfw_matcher = on_message(rule=check_model_available)
 
 
 @nsfw_matcher.handle()
