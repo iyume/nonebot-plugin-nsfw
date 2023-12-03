@@ -50,7 +50,10 @@ Safety Checker 是基于最新最热 CLIP 的 NSFW 图像概念实现。
 pip install nonebot-plugin-nsfw[safety-checker]
 ```
 
-此过程会自动根据你的本机配置下载对应的 torch 版本，CPU 大约 1 GB，GPU 大约 2 GB 或者更多。
+此过程会自动下载 torch GPU 版本，大约 2GB。
+
+> 如果你需要仅 CPU 的 torch，需要提前使用这条命令安装 torch：`pip install torch --index-url https://download.pytorch.org/whl/cpu`
+
 第一次加载插件时会从 huggingface 下载一个 600 MB 的模型文件，请确保网络连接通畅。
 
 载入 Safety Checker 需要 **至少 1.2 GB** 内存/显存。
