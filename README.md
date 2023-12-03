@@ -1,4 +1,12 @@
+<p align="center">
+  <img src="logo/logo.png" width="200" height="200" alt="nonebot-plugin-nsfw">
+</p>
+
+<div align="center">
+
 # NoneBot Plugin NSFW
+
+</div>
 
 此插件是一个集成于 NoneBot 的、基于深度神经网络的 **群聊 NSFW 图片检测插件**，带有 **撤回、警告、禁言** 等功能。可选择使用 [Safety Checker](https://github.com/iyume/safety-checker)、[NSFW Model](https://github.com/GantMan/nsfw_model) 模型。
 
