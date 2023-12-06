@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-nsfw"
-version = "0.8"
+version = "0.9"
 description = "群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。使用 Safety Checker / NSFW Model。"
 authors = [{ name = "iyume", email = "iyumelive@gmail.com" }]
 requires-python = ">=3.8"

@@ -36,7 +36,7 @@ def check_model_available() -> bool:
     return True
 
 
-nsfw_matcher = on_message(rule=check_model_available)
+nsfw_matcher = on_message(rule=check_model_available, block=False)
 
 
 @nsfw_matcher.handle()
