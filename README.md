@@ -48,7 +48,7 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 
 ## 使用 Safety Checker
 
-> Safety Checker 由我本人编写，只有 hook diffusers 的版本，暂时没有独立的实现，不过正常使用没问题。也许将来能实现检测强度配置。
+> Safety Checker 由我本人编写，只有 hook diffusers 的版本，暂时没有独立的实现，不过正常使用没问题。也许将来能实现检测强度配置。可参考 https://github.com/iyume/safety-checker/issues/1
 
 Safety Checker 是基于最新最热 CLIP 的 NSFW 图像概念实现。
 
