@@ -1,8 +1,9 @@
 import nonebot
-from nonebot import on_message
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
+from nonebot import on_message, on_notice
+from nonebot.adapters.onebot.v11 import Bot, GroupAdminNoticeEvent, GroupMessageEvent
 from nonebot.params import Depends
 from nonebot.plugin import PluginMetadata
+from nonebot.rule import Rule
 
 from nonebot_plugin_nsfw.config import PluginConfig, config
 from nonebot_plugin_nsfw.deps import User, detect_nsfw, get_current_user, get_run_model
@@ -36,7 +37,22 @@ def check_model_available() -> bool:
     return True
 
 
-nsfw_matcher = on_message(rule=check_model_available, block=False)
+async def _check_self_group_admin(bot: Bot, event: GroupMessageEvent) -> bool:
+    if (is_admin := _self_role_cache.get(event.group_id)) is None:
+        self_info = await bot.get_group_member_info(
+            group_id=event.group_id, user_id=event.self_id
+        )
+        is_admin = self_info["role"] in ("owner", "admin")
+        _self_role_cache[event.group_id] = is_admin
+    return is_admin
+
+
+nsfw_matcher = on_message(
+    rule=Rule(check_model_available, _check_self_group_admin), block=False
+)
+
+# Role in each group
+_self_role_cache: dict[int, bool] = {}
 
 
 @nsfw_matcher.handle()
@@ -58,3 +74,13 @@ async def _(
         )
     else:
         await bot.send(event, f"涩涩哒咩，警告 {user.warning_count} 次！", at_sender=True)
+
+
+role_changed = on_notice()
+
+
+@role_changed.handle()
+def _(event: GroupAdminNoticeEvent):
+    if not event.is_tome():
+        return
+    _self_role_cache[event.group_id] = event.sub_type == "set"
