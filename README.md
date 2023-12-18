@@ -92,7 +92,7 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 
 |                          | 默认值                            | 可选值                         | 说明                                               |
 | ------------------------ | --------------------------------- | ------------------------------ | -------------------------------------------------- |
-| nsfw\_\_model            | "safety-checker"                  | "safety-checker", "nsfw-model" |                                                    |
+| nsfw\_\_model            | "nsfw-model"                      | "safety-checker", "nsfw-model" |                                                    |
 | nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.            |                                                    |
 | nsfw\_\_withdraw         | True                              | True, False                    | 撤回检测到 NSFW 图片的消息                         |
 | nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载              |
