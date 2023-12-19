@@ -44,7 +44,7 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 
 默认行为：检测群聊消息中的图片并自动撤回 nsfw 图片，发送警告消息，警告次数累计 3 次执行禁言。
 
-使用前请确保机器人是管理员身份。
+机器人是非管理员身份时，则不会进行任何消息检测。
 
 ## 使用 Safety Checker
 
