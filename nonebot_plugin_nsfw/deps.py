@@ -7,6 +7,7 @@ from typing import Any, Dict, TypeVar
 import httpx
 from nonebot import logger
 from nonebot.adapters.onebot.v11.event import Event, MessageEvent
+from nonebot.adapters.onebot.v11.message import Message
 from PIL import Image
 
 from nonebot_plugin_nsfw.config import config
@@ -27,12 +28,10 @@ def _add_context(func: TC_RUNNER, msgid: int) -> TC_RUNNER:
     return _  # type: ignore
 
 
-async def detect_nsfw(event: MessageEvent) -> bool:
-    """依赖注入检查 nsfw 内容。
-
-    通过父依赖来设置 group 或其他 message event。
+def get_images(event: MessageEvent) -> Dict[int, Image.Image]:
     """
-    run_model = get_run_model()
+    获取event内所有的图片并以字典方式返回
+    """
     msg_images = event.message["image"]
     images: dict[int, Image.Image] = {}
     for idx, seg in enumerate(msg_images):
@@ -42,14 +41,24 @@ async def detect_nsfw(event: MessageEvent) -> bool:
             logger.error(f"Cannot fetch image from {url} msg#{event.message_id}")
             continue
         images[idx] = Image.open(BytesIO(r.content))
-    if not images:
-        return False
-    loop = asyncio.get_running_loop()
-    fut = loop.run_in_executor(
-        None, lambda: _add_context(run_model, event.message_id)(list(images.values()))
-    )
-    res = await fut
-    return res
+    return images
+
+
+async def detect_nsfw(event: MessageEvent) -> bool:
+    """依赖注入检查 nsfw 内容。
+
+    通过父依赖来设置 group 或其他 message event。
+    """
+    run_model = get_run_model()
+    if images := get_images(event):
+        loop = asyncio.get_running_loop()
+        fut = loop.run_in_executor(
+            None,
+            lambda: _add_context(run_model, event.message_id)(list(images.values())),
+        )
+        res = await fut
+        return res
+    return False
 
 
 # TODO: add Annotated deps when upgrade to py39

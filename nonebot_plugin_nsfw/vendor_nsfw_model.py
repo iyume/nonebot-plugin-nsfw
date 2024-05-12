@@ -4,6 +4,7 @@ Vendor this library because:
 1. dependency incorrect
 2. need more parameter
 """
+
 from __future__ import annotations
 
 from io import BytesIO

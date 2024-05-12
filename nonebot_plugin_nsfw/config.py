@@ -3,7 +3,7 @@ from typing import Literal, Optional
 
 import nonebot
 from nonebot import logger
-from pydantic import BaseModel, NonNegativeInt, PositiveInt
+from pydantic import BaseModel, NonNegativeInt, PositiveInt, field_validator
 
 DEFAULT_NSFW_MODEL_PATH = str(Path.cwd() / "nsfw_mobilenet2_v1.2.0.h5")
 DEFAULT_NSFW_MODEL_URI = "https://github.com/iyume/nonebot-plugin-nsfw/releases/download/v0.0/nsfw_mobilenet2_v1.2.0.h5"
@@ -33,6 +33,17 @@ class PluginScopedConfig(BaseModel):
 
     ban_time: PositiveInt = 30 * 60  # maybe list of increasing time
     """禁言时长秒数。默认为 1800。"""
+
+    save_image: bool = False
+    """是否保存图片到本地"""
+
+    image_save_path: str = "./images"
+
+    # @field_validator("image_save_path")
+    # @classmethod
+    # def check_safeR18_storage_path(cls, v) -> Path:  # type: ignore
+    #     v = Path(v)
+    #     return v
 
 
 class PluginConfig(BaseModel):
