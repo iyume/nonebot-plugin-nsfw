@@ -81,9 +81,9 @@ async def _(
             group_id=event.group_id, user_id=event.user_id, duration=config.ban_time
         )
     if config.save_image:
-        for index, i in get_images(event=event).items():
-            if not os.path.exists(config.image_save_path):
+        if not os.path.exists(config.image_save_path):
                 os.makedirs(config.image_save_path)
+        for index, i in (await get_images(event=event)).items():
             i.save(config.image_save_path + f"{event.message_id}-{index}.png")
     else:
         await bot.send(

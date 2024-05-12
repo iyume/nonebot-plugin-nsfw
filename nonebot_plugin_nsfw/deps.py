@@ -28,7 +28,7 @@ def _add_context(func: TC_RUNNER, msgid: int) -> TC_RUNNER:
     return _  # type: ignore
 
 
-def get_images(event: MessageEvent) -> Dict[int, Image.Image]:
+async def get_images(event: MessageEvent) -> Dict[int, Image.Image]:
     """
     获取event内所有的图片并以字典方式返回
     """
@@ -50,7 +50,7 @@ async def detect_nsfw(event: MessageEvent) -> bool:
     通过父依赖来设置 group 或其他 message event。
     """
     run_model = get_run_model()
-    if images := get_images(event):
+    if images := await get_images(event):
         loop = asyncio.get_running_loop()
         fut = loop.run_in_executor(
             None,
