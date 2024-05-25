@@ -1,3 +1,4 @@
+import os
 import asyncio
 import dataclasses
 from datetime import date
@@ -57,6 +58,11 @@ async def detect_nsfw(event: MessageEvent) -> bool:
             lambda: _add_context(run_model, event.message_id)(list(images.values())),
         )
         res = await fut
+        if config.save_image and res:
+            if not os.path.exists(config.image_save_path):
+                os.makedirs(config.image_save_path)
+            for index, i in images.items():
+                i.save(config.image_save_path + f"{event.message_id}-{index}.png")
         return res
     return False
 

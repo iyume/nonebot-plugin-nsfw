@@ -167,5 +167,3 @@ test.py
 /nsfw_mobilenet2_v1.2.0.h5
 
 /test_imgs
-/test_imgs.py
-pdm.lock
