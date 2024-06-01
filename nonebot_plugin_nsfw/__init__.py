@@ -1,5 +1,6 @@
-import nonebot
 import inspect
+
+import nonebot
 from nonebot import on_message, on_notice
 from nonebot.adapters.onebot.v11 import Bot, GroupAdminNoticeEvent, GroupMessageEvent
 from nonebot.params import Depends
@@ -7,20 +8,15 @@ from nonebot.plugin import PluginMetadata
 from nonebot.rule import Rule
 
 from nonebot_plugin_nsfw.config import PluginConfig, config
-from nonebot_plugin_nsfw.deps import (
-    User,
-    detect_nsfw,
-    get_current_user,
-    get_run_model,
-    get_images,
-)
+from nonebot_plugin_nsfw.deps import User, detect_nsfw, get_current_user, get_run_model
 from nonebot_plugin_nsfw.loader import run_loader_thread
 
 __plugin_meta__ = PluginMetadata(
     name="群聊 NSFW 图片检测",
     description=inspect.cleandoc(
-        "群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。\
-        使用 Safety Checker / NSFW Model"
+        """群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。
+        使用 Safety Checker / NSFW Model.
+        """
     ),
     usage="无",
     type="application",

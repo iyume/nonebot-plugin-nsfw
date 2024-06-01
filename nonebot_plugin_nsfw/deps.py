@@ -1,9 +1,10 @@
-import os
 import asyncio
 import dataclasses
+import os
 from datetime import date
 from io import BytesIO
-from typing import Any, Dict, TypeVar
+from pathlib import Path
+from typing import Any, Dict, List, TypeVar
 
 import httpx
 from nonebot import logger
@@ -29,19 +30,17 @@ def _add_context(func: TC_RUNNER, msgid: int) -> TC_RUNNER:
     return _  # type: ignore
 
 
-async def get_images(event: MessageEvent) -> Dict[int, Image.Image]:
-    """
-    获取event内所有的图片并以字典方式返回
-    """
+async def get_images(event: MessageEvent) -> List[Image.Image]:
+    """获取 event 内所有的图片，返回 list。"""
     msg_images = event.message["image"]
-    images: dict[int, Image.Image] = {}
-    for idx, seg in enumerate(msg_images):
+    images: list[Image.Image] = []
+    for seg in msg_images:
         url = seg.data["url"]
-        r = httpx.get(url)
-        if r.status_code != 200:
+        r = httpx.get(url, follow_redirects=True)
+        if not r.is_success:
             logger.error(f"Cannot fetch image from {url} msg#{event.message_id}")
             continue
-        images[idx] = Image.open(BytesIO(r.content))
+        images.append(Image.open(BytesIO(r.content)))
     return images
 
 
@@ -51,20 +50,32 @@ async def detect_nsfw(event: MessageEvent) -> bool:
     通过父依赖来设置 group 或其他 message event。
     """
     run_model = get_run_model()
-    if images := await get_images(event):
-        loop = asyncio.get_running_loop()
-        fut = loop.run_in_executor(
-            None,
-            lambda: _add_context(run_model, event.message_id)(list(images.values())),
-        )
-        res = await fut
-        if config.save_image and res:
-            if not os.path.exists(config.image_save_path):
-                os.makedirs(config.image_save_path)
-            for index, i in images.items():
-                i.save(config.image_save_path + f"{event.message_id}-{index}.png")
-        return res
-    return False
+    images = await get_images(event)
+    if not images:
+        return False
+    loop = asyncio.get_running_loop()
+    fut = loop.run_in_executor(
+        None,
+        lambda: _add_context(run_model, event.message_id)(images),
+    )
+    have_nsfw = await fut
+    await _process_images(event, images, have_nsfw)
+    return any(have_nsfw)
+
+
+async def _process_images(
+    event: MessageEvent, images: List[Image.Image], have_nsfw: List[bool]
+) -> None:
+    if config.save_image:
+        save_path = Path(config.image_save_path)
+        if not save_path.exists():
+            save_path.mkdir(exist_ok=True, parents=True)
+        if not save_path.is_dir():
+            logger.error(f"Configured {save_path} is not directory")
+            return
+        nsfw_images = [i[0] for i in zip(images, have_nsfw) if i[1]]
+        for i, image in enumerate(nsfw_images):
+            image.save(save_path / f"{event.message_id}_{i}.png")
 
 
 # TODO: add Annotated deps when upgrade to py39

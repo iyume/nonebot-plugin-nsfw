@@ -118,11 +118,13 @@ def preprocess_pil(images: Image.Image | list[Image.Image]) -> NDArray[np.double
     return np.asarray(res_images)
 
 
-def classify_from_pil(model: Model, images: Image.Image | list[Image.Image]) -> bool:
+def classify_from_pil(
+    model: Model, images: Image.Image | list[Image.Image]
+) -> list[bool]:
     inputs = preprocess_pil(images)
     probs = classify_nd(model, inputs)
-    has_nsfw = []
+    have_nsfw = []
     for prob in probs:
         max_label = max(prob, key=prob.__getitem__)
-        has_nsfw.append(max_label in ["hentai", "porn", "sexy"])
-    return any(has_nsfw)
+        have_nsfw.append(max_label in ["hentai", "porn", "sexy"])
+    return have_nsfw

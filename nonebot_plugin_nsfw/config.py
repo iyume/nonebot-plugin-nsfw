@@ -35,15 +35,10 @@ class PluginScopedConfig(BaseModel):
     """禁言时长秒数。默认为 1800。"""
 
     save_image: bool = False
-    """是否保存图片到本地"""
+    """是否保存 nsfw 图片到本地。"""
 
     image_save_path: str = "./images"
-
-    # @field_validator("image_save_path")
-    # @classmethod
-    # def check_safeR18_storage_path(cls, v) -> Path:  # type: ignore
-    #     v = Path(v)
-    #     return v
+    """"""
 
 
 class PluginConfig(BaseModel):
