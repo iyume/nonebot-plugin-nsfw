@@ -90,15 +90,17 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 
 ## 插件配置项
 
-|                          | 默认值                            | 可选值                         | 说明                                               |
-| ------------------------ | --------------------------------- | ------------------------------ | -------------------------------------------------- |
-| nsfw\_\_model            | "nsfw-model"                      | "safety-checker", "nsfw-model" |                                                    |
-| nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.            |                                                    |
-| nsfw\_\_withdraw         | True                              | True, False                    | 撤回检测到 NSFW 图片的消息                         |
-| nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载              |
-| nsfw\_\_warning_capacity | 3                                 | 非负整数                       | 一天内警告 N 次后禁言，0 不警告，ban=True 直接禁言 |
-| nsfw\_\_ban              | True                              | True, False                    | 是否启用禁言                                       |
-| nsfw\_\_ban_time         | 1800                              | 正整数                         | 禁言时长，单位为秒数                               |
+|                          | 默认值                            | 可选值                         | 说明                                                                             |
+| ------------------------ | --------------------------------- | ------------------------------ | -------------------------------------------------------------------------------- |
+| nsfw\_\_model            | "nsfw-model"                      | "safety-checker", "nsfw-model" |                                                                                  |
+| nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.            |                                                                                  |
+| nsfw\_\_withdraw         | True                              | True, False                    | 撤回检测到 NSFW 图片的消息                                                       |
+| nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载                                            |
+| nsfw\_\_warning_capacity | 3                                 | 非负整数                       | 一天内警告 N 次后禁言，0 不警告，ban=True 直接禁言                               |
+| nsfw\_\_ban              | True                              | True, False                    | 是否启用禁言                                                                     |
+| nsfw\_\_ban_time         | 1800                              | 正整数                         | 禁言时长，单位为秒数                                                             |
+| nsfw\_\_save_image       | True                              | True, False                    | 是否保存涩涩图片 (Thanks to https://github.com/iyume/nonebot-plugin-nsfw/pull/6) |
+| nsfw\_\_image_save_path  | cwd() / images                    | 字符串                         | 涩涩图片保存路径                                                                 |
 
 更多配置正在开发中...
 
