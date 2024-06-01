@@ -3,7 +3,7 @@ name = "nonebot-plugin-nsfw"
 version = "0.10"
 description = "群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。使用 Safety Checker / NSFW Model。"
 authors = [{ name = "iyume", email = "iyumelive@gmail.com" }]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 dependencies = [
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-safety-checker = ["safety-checker[sdhook]>=0.3", "numpy"]
+safety-checker = ["safety-checker[sdhook]>=0.5", "numpy"]
 nsfw-model = ["tensorflow>=2.2.0", "tensorflow-hub>=0.12", "numpy"]
 
 

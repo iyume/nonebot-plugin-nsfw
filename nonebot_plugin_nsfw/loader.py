@@ -24,7 +24,7 @@ from nonebot_plugin_nsfw.config import (
 
 
 class run_model_intf(Protocol):
-    def __call__(self, images: Image.Image | list[Image.Image]) -> bool:
+    def __call__(self, images: Image.Image | list[Image.Image]) -> list[bool]:
         raise NotImplementedError
 
 

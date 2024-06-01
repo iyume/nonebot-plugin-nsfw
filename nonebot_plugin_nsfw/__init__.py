@@ -1,3 +1,5 @@
+import inspect
+
 import nonebot
 from nonebot import on_message, on_notice
 from nonebot.adapters.onebot.v11 import Bot, GroupAdminNoticeEvent, GroupMessageEvent
@@ -11,7 +13,11 @@ from nonebot_plugin_nsfw.loader import run_loader_thread
 
 __plugin_meta__ = PluginMetadata(
     name="群聊 NSFW 图片检测",
-    description="群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。使用 Safety Checker / NSFW Model",
+    description=inspect.cleandoc(
+        """群聊 NSFW 图片检测插件，带有撤回、警告、禁言等功能。
+        使用 Safety Checker / NSFW Model.
+        """
+    ),
     usage="无",
     type="application",
     config=PluginConfig,
@@ -73,7 +79,9 @@ async def _(
             group_id=event.group_id, user_id=event.user_id, duration=config.ban_time
         )
     else:
-        await bot.send(event, f"涩涩哒咩，警告 {user.warning_count} 次！", at_sender=True)
+        await bot.send(
+            event, f"涩涩哒咩，警告 {user.warning_count} 次！", at_sender=True
+        )
 
 
 role_changed = on_notice()
