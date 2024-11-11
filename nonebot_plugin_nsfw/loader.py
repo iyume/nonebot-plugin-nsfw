@@ -52,7 +52,7 @@ def load_safety_checker() -> None:
     safety_checker = SafetyChecker.from_pretrained_default()
     safety_checker = safety_checker.to(config.device)
     global _run_model
-    _run_model = lambda images: safety_checker.run(images)
+    _run_model = lambda images: safety_checker.run_batch(images)
 
 
 def _download_default_nsfw_model() -> None:
