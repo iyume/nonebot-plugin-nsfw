@@ -1,20 +1,12 @@
 {
-    "configurations": [
-        {
-            "name": "Python: test.py",
-            "type": "python",
-            "request": "launch",
-            "program": "test.py",
-            "console": "integratedTerminal",
-            "justMyCode": false
-        },
-        {
-            "name": "Python: test_imgs.py",
-            "type": "python",
-            "request": "launch",
-            "program": "test_imgs.py",
-            "console": "integratedTerminal",
-            "justMyCode": false
-        }
-    ]
+  "configurations": [
+    {
+      "name": "Python: bot.py",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "bot.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
 }

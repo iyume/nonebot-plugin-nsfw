@@ -1,9 +1,8 @@
 from pathlib import Path
 from typing import Literal, Optional
 
-import nonebot
-from nonebot import logger
-from pydantic import BaseModel, NonNegativeInt, PositiveInt, field_validator
+from nonebot import get_plugin_config, logger
+from pydantic import BaseModel, NonNegativeInt, PositiveInt
 
 DEFAULT_NSFW_MODEL_PATH = str(Path.cwd() / "nsfw_mobilenet2_v1.2.0.h5")
 DEFAULT_NSFW_MODEL_URI = "https://github.com/iyume/nonebot-plugin-nsfw/releases/download/v0.0/nsfw_mobilenet2_v1.2.0.h5"
@@ -45,7 +44,7 @@ class PluginConfig(BaseModel):
     nsfw: PluginScopedConfig = PluginScopedConfig()
 
 
-config = PluginConfig.parse_obj(nonebot.get_driver().config).nsfw
+config = get_plugin_config(PluginConfig).nsfw
 
 if config.nsfw_model_path is not None and config.model != "nsfw-model":
     logger.warning("Provided nsfw_model_path without using its model")
