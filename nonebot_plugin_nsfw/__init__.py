@@ -78,7 +78,7 @@ async def _(
         await bot.set_group_ban(
             group_id=event.group_id, user_id=event.user_id, duration=config.ban_time
         )
-    else:
+    elif config.warning_capacity:
         await bot.send(
             event, f"涩涩哒咩，警告 {user.warning_count} 次！", at_sender=True
         )
