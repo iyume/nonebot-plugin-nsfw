@@ -7,7 +7,11 @@ from pydantic import BaseModel, NonNegativeInt, PositiveInt
 DEFAULT_NSFW_MODEL_PATH = str(Path.cwd() / "nsfw_mobilenet2_v1.2.0.h5")
 DEFAULT_NSFW_MODEL_URI = "https://github.com/iyume/nonebot-plugin-nsfw/releases/download/v0.0/nsfw_mobilenet2_v1.2.0.h5"
 
-T_AVAILABLE_MODEL = Literal["safety-checker", "nsfw-model"]
+T_AVAILABLE_MODEL = Literal[
+    "safety-checker",
+    "nsfw-model",
+    "nsfw_image_detection",
+]
 
 
 class PluginScopedConfig(BaseModel):
@@ -37,7 +41,6 @@ class PluginScopedConfig(BaseModel):
     """是否保存 nsfw 图片到本地。"""
 
     image_save_path: str = "./images"
-    """"""
 
 
 class PluginConfig(BaseModel):

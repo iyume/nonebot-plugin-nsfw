@@ -12,17 +12,17 @@
 
 **注意：** 目前插件仅在 matcha 完成测试，只能保证 OneBot V11 兼容。
 
-## Safety Checker 对比 NSFW Model
+## 模型对比
 
-|                              | Safety Checker      | NSFW Model（默认） |
-| ---------------------------- | ------------------- | ------------------ |
-| 训练时间                     | 2022                | 2020               |
-| 适用情景                     | 仅 R15+             | 仅 R18+            |
-| 框架                         | PyTorch             | Tensorflow         |
-| 模型大小                     | 600MB (fp16)        | ~10MB (fp16)       |
-| 内存占用                     | 1.2GB               | 极小               |
-| 执行时间 (CPU Ryzen 7 7840H) | 0.5s (10)           | 0.05s (1)          |
-| 执行时间 (GPU 4060 Laptop)   | 0.15s (4060 laptop) | 暂无               |
+|                              | Safety Checker      | NSFW Model（默认） | nsfw_image_detection |
+| ---------------------------- | ------------------- | ------------------ | -------------------- |
+| 训练时间                     | 2022                | 2020               | 2023 年 10 月        |
+| 适用情景                     | R15+                | R18+               | R15+                 |
+| 框架                         | PyTorch             | Tensorflow         | PyTorch              |
+| 模型大小                     | 600MB (fp16)        | ~10MB (fp16)       | 300MB                |
+| 内存占用                     | 1.2GB               | 极小               | 小                   |
+| 执行时间 (CPU Ryzen 7 7840H) | 0.5s (10)           | 0.05s (1)          | -                    |
+| 执行时间 (GPU 4060 Laptop)   | 0.15s (4060 laptop) | 暂无               | -                    |
 
 ## 快速开始
 
@@ -88,19 +88,29 @@ pip install nonebot-plugin-nsfw[nsfw-model]
 > 同理，尝试使用 numpy 去实现也是困难的。
 > 目前似乎没看到可以直接完美实现前向计算的轻量库，如果你找到了可以告诉我。
 
+## 使用 nsfw_image_detection
+
+这是 2023 年 10 月份出的基于 ViT 的模型，识别率和内存占用上应该都比 safety-checker 要好点。
+
+使用下面命令安装：
+
+```txt
+pip install nonebot-plugin-nsfw[nsfw_image_detection]
+```
+
 ## 插件配置项
 
-|                          | 默认值                            | 可选值                         | 说明                                                                             |
-| ------------------------ | --------------------------------- | ------------------------------ | -------------------------------------------------------------------------------- |
-| nsfw\_\_model            | "nsfw-model"                      | "safety-checker", "nsfw-model" |                                                                                  |
-| nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.            |                                                                                  |
-| nsfw\_\_withdraw         | True                              | True, False                    | 撤回检测到 NSFW 图片的消息                                                       |
-| nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path         | nsfw-model 模型路径，没配置则自动下载                                            |
-| nsfw\_\_warning_capacity | 3                                 | 非负整数                       | 一天内警告 N 次后禁言，0 不警告，ban=True 直接禁言                               |
-| nsfw\_\_ban              | True                              | True, False                    | 是否启用禁言                                                                     |
-| nsfw\_\_ban_time         | 1800                              | 正整数                         | 禁言时长，单位为秒数                                                             |
-| nsfw\_\_save_image       | True                              | True, False                    | 是否保存涩涩图片 (Thanks to https://github.com/iyume/nonebot-plugin-nsfw/pull/6) |
-| nsfw\_\_image_save_path  | cwd() / images                    | 字符串                         | 涩涩图片保存路径                                                                 |
+|                          | 默认值                            | 可选值                                                   | 说明                                                                             |
+| ------------------------ | --------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| nsfw\_\_model            | "nsfw-model"                      | "safety-checker" / "nsfw-model" / "nsfw_image_detection" |                                                                                  |
+| nsfw\_\_device           | "cpu"                             | "cpu", "cuda", etc.                                      |                                                                                  |
+| nsfw\_\_withdraw         | True                              | True, False                                              | 撤回检测到 NSFW 图片的消息                                                       |
+| nsfw\_\_nsfw_model_path  | cwd() / nsfw_mobilenet2_v1.2.0.h5 | .h5 or SavedModel path                                   | nsfw-model 模型路径，没配置则自动下载                                            |
+| nsfw\_\_warning_capacity | 3                                 | 非负整数                                                 | 一天内警告 N 次后禁言，0 不警告，ban=True 直接禁言                               |
+| nsfw\_\_ban              | True                              | True, False                                              | 是否启用禁言                                                                     |
+| nsfw\_\_ban_time         | 1800                              | 正整数                                                   | 禁言时长，单位为秒数                                                             |
+| nsfw\_\_save_image       | True                              | True, False                                              | 是否保存涩涩图片 (Thanks to https://github.com/iyume/nonebot-plugin-nsfw/pull/6) |
+| nsfw\_\_image_save_path  | cwd() / images                    | 字符串                                                   | 涩涩图片保存路径                                                                 |
 
 更多配置正在开发中...
 

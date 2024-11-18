@@ -9,7 +9,7 @@ import logging
 import os
 from pathlib import Path
 from threading import Thread
-from typing import Callable, Protocol
+from typing import Any, Callable, Protocol
 
 import httpx
 from nonebot import logger
@@ -93,12 +93,40 @@ def load_nsfw_model() -> None:
     _run_model = lambda images: classify_from_pil(model, images)
 
 
+def load_nsfw_image_detection() -> None:
+    try:
+        from PIL import Image
+        from transformers import pipeline
+    except ImportError as e:
+        raise ImportError(
+            "nsfw_image_detection is not available, install it using "
+            '"pip install nonebot-plugin-nsfw[nsfw_image_detection]"'
+        ) from e
+    classifier = pipeline(
+        "image-classification", model="Falconsai/nsfw_image_detection"
+    )
+
+    def run(images: Image.Image | list[Image.Image]) -> list[bool]:
+        results: Any = classifier(images)
+        have_nsfw = []
+        results = [
+            {prob["label"]: prob["score"] for prob in probs} for probs in results
+        ]
+        have_nsfw = [i["nsfw"] > i["normal"] for i in results]
+        return have_nsfw
+
+    global _run_model
+    _run_model = lambda images: run(images)
+
+
 _loaders: dict[T_AVAILABLE_MODEL, Callable[[], None]] = {
     "safety-checker": load_safety_checker,
     "nsfw-model": load_nsfw_model,
+    "nsfw_image_detection": load_nsfw_image_detection,
 }
-_loader = _loaders.get(config.model)
-if _loader is None:
+try:
+    _loader = _loaders[config.model]
+except KeyError:
     raise RuntimeError(f"unsupported model {config.model!r}")
 
 
@@ -108,11 +136,9 @@ def _ctx_loader():
         _loader()
     except Exception as e:
         logger.exception(e)
-        logger.error(
-            "Cannot load model, try to install using "
-            + repr("pip install nonebot-plugin-nsfw[nsfw-model]"),
-        )
-    logger.success("Successfully load model")
+    logger.opt(colors=True).success(
+        f'Successfully load model "<yellow>{config.model}</yellow>"'
+    )
 
 
 def run_loader_thread() -> Thread:

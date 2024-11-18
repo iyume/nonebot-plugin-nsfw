@@ -16,6 +16,7 @@ dependencies = [
 [project.optional-dependencies]
 safety-checker = ["safety-checker[sdhook]>=0.5", "numpy"]
 nsfw-model = ["tensorflow>=2.2.0", "tensorflow-hub>=0.12", "numpy"]
+nsfw_image_detection = ["transformers==4.*"]
 
 
 [tool.pyright]
